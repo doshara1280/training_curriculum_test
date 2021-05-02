@@ -36,9 +36,16 @@ class CalendarsController < ApplicationController
       plans.each do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-      days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans}
+
+      #Issue6 曜日情報の数値が7以上の場合の処理
+      wday_num = Date.today.wday + x
+      if wday_num >= 7
+        wday_num = wday_num - 7
+      end
+
+      #Issue6 曜日情報wdaysをindex.html.erbに渡す記述を追加
+      days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans, :wday => wdays[wday_num]}
       @week_days.push(days)
     end
-
   end
 end
